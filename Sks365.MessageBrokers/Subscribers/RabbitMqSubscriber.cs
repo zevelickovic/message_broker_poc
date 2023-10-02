@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using Sks365.MessageBrokers.Configuration;
+using Sks365.MessageBrokers.Configuration.RabbitMq;
 
 namespace Sks365.MessageBrokers.Subscribers;
 

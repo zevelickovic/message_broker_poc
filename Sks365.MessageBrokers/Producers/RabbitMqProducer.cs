@@ -3,7 +3,7 @@ using Sks365.MessageBrokers.DomainMessages.Handlers;
 using Sks365.MessageBrokers.DomainMessages;
 using System.Text;
 using RabbitMQ.Client;
-using Sks365.MessageBrokers.Configuration;
+using Sks365.MessageBrokers.Configuration.RabbitMq;
 
 namespace Sks365.MessageBrokers.Producers;
 

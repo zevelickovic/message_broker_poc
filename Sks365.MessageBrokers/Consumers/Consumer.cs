@@ -3,12 +3,12 @@ using Sks365.MessageBrokers.Subscribers;
 
 namespace Sks365.MessageBrokers.Consumers;
 
-public class ConsumerV2 : IConsumerV2
+public class Consumer : IConsumer
 {
     private readonly ISubscriber _busListener;
     private readonly IDomainEventHandler _eventMessageHandler;
 
-    public ConsumerV2(ISubscriber busListener, IDomainEventHandler eventMessageHandler)
+    public Consumer(ISubscriber busListener, IDomainEventHandler eventMessageHandler)
     {
         _busListener = busListener;
         _eventMessageHandler = eventMessageHandler;

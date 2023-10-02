@@ -1,4 +1,4 @@
-﻿using Sks365.MessageBrokers.Configuration;
+﻿using Sks365.MessageBrokers.Configuration.Broker;
 using Sks365.MessageBrokers.Consumers;
 using Sks365.MessageBrokers.DomainMessages.Handlers;
 using Sks365.MessageBrokers.Producers;

@@ -1,7 +1,7 @@
 ﻿using Confluent.Kafka;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using Sks365.MessageBrokers.Configuration;
+using Sks365.MessageBrokers.Configuration.Kafka;
 using Sks365.MessageBrokers.DomainMessages;
 using Sks365.MessageBrokers.DomainMessages.Handlers;
 using Sks365.MessageBrokers.Extensions;

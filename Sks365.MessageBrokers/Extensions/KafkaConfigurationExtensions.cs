@@ -1,15 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
-using Sks365.MessageBrokers.Configuration;
+﻿using Sks365.MessageBrokers.Configuration.Kafka;
 
 namespace Sks365.MessageBrokers.Extensions;
 
 public static class KafkaConfigurationExtensions
 {
-    public static IConfiguration GetConfigurationCollection(this KafkaSettingsConfiguration config)
+    public static IEnumerable<KeyValuePair<string, string>> GetConfigurationCollection(this KafkaSettingsConfiguration config)
     {
-        var builder = new ConfigurationBuilder().Build();
-        foreach(var item in config.Config)
-            builder[item.Key] = item.Value;
-        return builder;
+        return config.Config.Select((pair) => pair);
     }
 }
