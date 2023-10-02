@@ -11,4 +11,13 @@ public class BrokerConfiguration
     public RabbitMqConfiguration RabbitMq { get; set; }
     [JsonProperty("kafka")]
     public KafkaConfiguration Kafka { get; set; }
+
+    public static BrokerConfiguration? Get()
+    {
+        using (StreamReader r = new StreamReader(Path.GetFullPath("message-broker-config.json")))
+        {
+            string json = r.ReadToEnd();
+            return JsonConvert.DeserializeObject<BrokerConfiguration>(json);
+        }
+    }
 }

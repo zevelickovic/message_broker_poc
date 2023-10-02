@@ -11,7 +11,7 @@ public class RabbitMqBrokerConfiguration
     {
         _subscribersConfiguration = new Dictionary<string, RabbitMqSubscriberConfiguration>();
         _producerConfiguration = new Dictionary<string, RabbitMqProducerConfiguration>();
-        var config = BrokerConfigurationBuilder.Get();
+        var config = BrokerConfiguration.Get();
         foreach (var item in config.RabbitMq.Subscriber)
             _subscribersConfiguration.Add(item.Name, item);
         foreach (var item in config.RabbitMq.Producers)

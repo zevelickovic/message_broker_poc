@@ -11,7 +11,7 @@ public class KafkaBrokerConfiguration
     {
         _subscribersConfiguration = new Dictionary<string, KafkaSubscriberConfiguration>();
         _producerConfiguration = new Dictionary<string, KafkaProducerConfiguration>();
-        var config = BrokerConfigurationBuilder.Get();
+        var config = BrokerConfiguration.Get();
         foreach (var item in config.Kafka.Subscribers)
             _subscribersConfiguration.Add(item.Name, item);
         foreach (var item in config.Kafka.Producers)
