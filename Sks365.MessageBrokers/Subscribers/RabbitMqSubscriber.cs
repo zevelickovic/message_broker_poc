@@ -14,12 +14,12 @@ public class RabbitMqSubscriber : ISubscriber
     public event MessageHandler? MessageReceived;
     public event ListenerErrorHandler? ListenerErrorHandler;
 
-    private readonly RabbitMqSubscriberSettings _settings;
+    private readonly RabbitMqSubscriberConfiguration _settings;
 
     private Thread receivingThread;
     private EventingBasicConsumer eventingBasicConsumer;
 
-    public RabbitMqSubscriber(RabbitMqSubscriberSettings settings)
+    public RabbitMqSubscriber(RabbitMqSubscriberConfiguration settings)
     {
         _settings = settings;
         _connectionFactory = _settings.CreateConnectionFactory();

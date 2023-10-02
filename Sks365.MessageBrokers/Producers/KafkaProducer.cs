@@ -4,19 +4,20 @@ using Newtonsoft.Json;
 using Sks365.MessageBrokers.Configuration;
 using Sks365.MessageBrokers.DomainMessages;
 using Sks365.MessageBrokers.DomainMessages.Handlers;
+using Sks365.MessageBrokers.Extensions;
 
 namespace Sks365.MessageBrokers.Producers;
 
 public class KafkaProducer : IProducer
 {
-    private readonly KafkaConfiguration _configuration;
+    private readonly KafkaProducerConfiguration _configuration;
     private readonly string _topic;
     private readonly IProducer<string, string> _producer;
-    public KafkaProducer(string topic)
+    public KafkaProducer(KafkaProducerConfiguration configuration)
     {
-        _configuration = new KafkaConfiguration();
-        _producer = new ProducerBuilder<string, string>(_configuration.GetProducer().AsEnumerable()).Build();
-        _topic = topic;
+        _configuration = configuration;
+        _producer = new ProducerBuilder<string, string>(configuration.GetConfigurationCollection().AsEnumerable()).Build();
+        _topic = configuration.Topic;
     }
 
     private bool Publish<T>(InfrastructureEvent<T> obj, string key) where T : DomainEventMessage<T>, IDomainMessage

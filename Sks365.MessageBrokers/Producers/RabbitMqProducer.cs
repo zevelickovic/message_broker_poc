@@ -9,10 +9,10 @@ namespace Sks365.MessageBrokers.Producers;
 
 public class RabbitMqProducer : IProducer
 {
-    private readonly RabbitMqProducerSettings _settings;
+    private readonly RabbitMqProducerConfiguration _settings;
     private readonly IConnectionFactory _connectionFactory;
 
-    public RabbitMqProducer(RabbitMqProducerSettings settings)
+    public RabbitMqProducer(RabbitMqProducerConfiguration settings)
     {
         _settings = settings;
         _connectionFactory = _settings.CreateConnectionFactory();

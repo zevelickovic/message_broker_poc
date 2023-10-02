@@ -1,6 +1,7 @@
 ﻿using Confluent.Kafka;
 using Microsoft.Extensions.Configuration;
 using Sks365.MessageBrokers.Configuration;
+using Sks365.MessageBrokers.Extensions;
 
 namespace Sks365.MessageBrokers.Subscribers;
 
@@ -13,19 +14,13 @@ public class KafkaSubscriber : ISubscriber
     private bool _started;
     private CancellationTokenSource cts = new CancellationTokenSource();
     private readonly string _topic;
-    private readonly KafkaConfiguration _configuration;
+    private readonly KafkaSubscriberConfiguration _configuration;
 
-    public KafkaSubscriber(string topic)
+    public KafkaSubscriber(KafkaSubscriberConfiguration configuration)
     {
-        _configuration = new KafkaConfiguration();
-        var groupId = _configuration.GetConsumerGroupId();
-        if (string.IsNullOrEmpty(groupId))
-        {
-            groupId = "group-1";
-            _configuration.SetGroupId(groupId);
-        }
-        _consumer = new ConsumerBuilder<string, string>(_configuration.GetConsumer().AsEnumerable()).Build();
-        _topic = topic;
+        _configuration = configuration;
+        _consumer = new ConsumerBuilder<string, string>(configuration.GetConfigurationCollection().AsEnumerable()).Build();
+        _topic = configuration.Topic;
     }
     public void Start()
     {

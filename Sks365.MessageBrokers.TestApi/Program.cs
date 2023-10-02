@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Sks365.MessageBrokers.Brokers;
+using Sks365.MessageBrokers.Configuration;
 using Sks365.MessageBrokers.DomainMessages.Handlers;
 using Sks365.MessageBrokers.Extensions;
 using Sks365.MessageBrokers.TestApi.DummyTest;
 
+var config = BrokerConfigurationBuilder.Get();
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
@@ -30,10 +32,7 @@ app.MapControllers();
 
 app.Lifetime.ApplicationStarted.Register(() =>
 {
-    var consumerBroker = (IConsumerBroker)app.Services.GetService(typeof(IConsumerBroker));
-    consumerBroker.StartAll();
-    
-    
+    app.Services.StartAllConsumers();
 });
 
 app.Run();

@@ -10,12 +10,12 @@ public class KafkaTestController : Controller
 {
     [HttpGet]
     [Route("send")]
-    public bool PublishTest([FromServices] IPublisherBroker publisherBroker)
+    public bool PublishTest([FromServices] IMessageBroker messagedBroker)
     {
         TestingEvent depositAddedEvent = new TestingEvent()
         {
             TestId = Random.Shared.Next(20, 155)
         };
-        return publisherBroker.GetKafkaPublisher("name-1").Publish(depositAddedEvent, "1");
+        return messagedBroker.GetProducer("kafka-producer-01").Publish(depositAddedEvent, "1");
     }
 }

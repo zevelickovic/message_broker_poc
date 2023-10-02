@@ -1,19 +1,13 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Sks365.MessageBrokers.Brokers;
-using Sks365.MessageBrokers.DomainMessages.Events;
-using Sks365.MessageBrokers.DomainMessages.Handlers;
+﻿using Sks365.MessageBrokers.Brokers;
 
 namespace Sks365.MessageBrokers.Extensions
 {
     public static class IServiceCollectionExtensions
     {
-        public static IServiceCollection UseMessageBroker(this IServiceCollection services)
+        public static void StartAllConsumers(this IServiceProvider services)
         {
-            services.AddSingleton<InfrastructureDomainEventsList>();
-            services.AddSingleton<IDomainEventHandler, DomainEventHandler>();
-            services.AddSingleton<IPublisherBroker, PublisherBroker>();
-            services.AddSingleton<IConsumerBroker, ConsumerBroker>();
-            return services;
+            var consumerBroker = (IMessageBroker)services.GetService(typeof(IMessageBroker));
+            consumerBroker.StartAllConsumers();
         }
     }
 }

@@ -10,12 +10,12 @@ public class RabbitMqTestController : Controller
 {
     [HttpGet]
     [Route("send")]
-    public bool SendMessage([FromServices] IPublisherBroker publisherBroker)
+    public bool SendMessage([FromServices] IMessageBroker messageBroker)
     {
         TestingEvent depositAddedEvent = new TestingEvent()
         {
             TestId = Random.Shared.Next(20, 155)
         };
-        return publisherBroker.GetRabbiMqPublisher("producer-01").Publish(depositAddedEvent, "1");
+        return messageBroker.GetProducer("rmq-producer-01").Publish(depositAddedEvent, "1");
     }
 }
