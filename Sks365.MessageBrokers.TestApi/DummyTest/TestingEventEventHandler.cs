@@ -10,7 +10,7 @@ public class TestingEventEventHandler : DomainEventMessageHandler<TestingEvent>
 
     public override bool HandleDomainMessage(TestingEvent domainMessage)
     {
-        Console.WriteLine("GameSessionEventReceived");
+        Console.WriteLine("TestingEventEventHandler");
         if (domainMessage == null)
         {
             return false;
@@ -21,7 +21,7 @@ public class TestingEventEventHandler : DomainEventMessageHandler<TestingEvent>
 
     public override async Task<bool> HandleDomainMessageAsync(TestingEvent domainMessage)
     {
-        Console.WriteLine("GameSessionEventReceived");
+        Console.WriteLine("TestingEventEventHandler Async");
         return await Task<bool>.Run(() => true);
     }
 }
