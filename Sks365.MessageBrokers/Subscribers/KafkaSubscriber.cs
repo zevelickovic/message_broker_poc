@@ -29,7 +29,7 @@ public class KafkaSubscriber : ISubscriber
         try
         {
             _consumer.Subscribe(_topic);
-            Console.WriteLine($"ConsumerV2 {_consumer.Name} in group {groupId}. Subscribed to topic regex {_topic}");
+            Console.WriteLine($"Consumer {_consumer.Name} in group {groupId}. Subscribed to topic regex {_topic}");
             while (_started)
             {
                 var cr = _consumer.Consume(cts.Token);

@@ -8,7 +8,7 @@ namespace Sks365.MessageBrokers.Brokers;
 
 public class MessageBroker : IMessageBroker
 {
-    private readonly Dictionary<string, IConsumerV2> _consumers = new();
+    private readonly Dictionary<string, IConsumer> _consumers = new();
     private readonly Dictionary<string, IProducer> _producers = new();
 
     public MessageBroker(IDomainEventHandler eventMessageHandler)
@@ -19,12 +19,12 @@ public class MessageBroker : IMessageBroker
         foreach (var config in kafkaConfig.GetSubscribersConfiguration())
         {
             var subscriber = new KafkaSubscriber(config.Value);
-            _consumers.Add(config.Key, new ConsumerV2(subscriber, eventMessageHandler));
+            _consumers.Add(config.Key, new Consumer(subscriber, eventMessageHandler));
         }
         foreach (var config in rabbitMqConfig.GetSubscribersConfiguration())
         {
             var subscriber = new RabbitMqSubscriber(config.Value);
-            _consumers.Add(config.Key, new ConsumerV2(subscriber, eventMessageHandler));
+            _consumers.Add(config.Key, new Consumer(subscriber, eventMessageHandler));
         }
         foreach (var config in kafkaConfig.GetProducersConfiguration())
         {
@@ -35,7 +35,7 @@ public class MessageBroker : IMessageBroker
             _producers.Add(config.Key, new RabbitMqProducer(config.Value));
         }
     }
-    public IConsumerV2 GetConsumer(string name)
+    public IConsumer GetConsumer(string name)
     {
         return _consumers[name];
     }

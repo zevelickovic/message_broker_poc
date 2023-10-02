@@ -5,7 +5,7 @@ namespace Sks365.MessageBrokers.Brokers;
 
 public interface IMessageBroker
 {
-    IConsumerV2 GetConsumer(string name);
+    IConsumer GetConsumer(string name);
     IProducer GetProducer(string name);
     void StartAllConsumers();
     void StopAllConsumers();
