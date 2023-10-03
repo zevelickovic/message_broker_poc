@@ -14,6 +14,20 @@
         "durable": true,
         "exclusive": false,
         "auto-delete": false
+      },
+      {
+        "name": "rmq-subscriber-02",
+        "host": "localhost",
+        "virtual-host": "test-host",
+        "username": "guest",
+        "password": "guest",
+        "exchange": "broker-exchange-01",
+        "queue": "broker-test-queue-02",
+        "routing-key": "#",
+        "prefetch": 1,
+        "durable": true,
+        "exclusive": false,
+        "auto-delete": false
       }
     ],
     "producers": [

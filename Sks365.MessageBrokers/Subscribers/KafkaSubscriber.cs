@@ -8,7 +8,7 @@ namespace Sks365.MessageBrokers.Subscribers;
 public class KafkaSubscriber : ISubscriber
 {
     public event MessageHandler MessageReceived;
-    public event ListenerErrorHandler ListenerErrorHandler;
+    public event ListenerErrorHandler SubscriberErrorHandler;
 
     private readonly IConsumer<string, string> _consumer;
     private bool _started;

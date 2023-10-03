@@ -2,7 +2,7 @@
 
 namespace Sks365.MessageBrokers.Configuration.Kafka;
 
-public class KafkaSettingsConfiguration
+public class KafkaSettingsConfiguration : ISettingsConfiguration
 {
     [JsonProperty("name")]
     public string Name { get; set; }

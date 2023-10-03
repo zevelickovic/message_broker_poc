@@ -12,7 +12,7 @@ public class RabbitMqSubscriber : ISubscriber
     private IModel _channel;
 
     public event MessageHandler? MessageReceived;
-    public event ListenerErrorHandler? ListenerErrorHandler;
+    public event ListenerErrorHandler? SubscriberErrorHandler;
 
     private readonly RabbitMqSubscriberConfiguration _settings;
 

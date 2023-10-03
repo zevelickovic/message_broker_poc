@@ -3,7 +3,7 @@ using RabbitMQ.Client;
 
 namespace Sks365.MessageBrokers.Configuration.RabbitMq;
 
-public class RabbitMqSettingsConfiguration
+public class RabbitMqSettingsConfiguration : ISettingsConfiguration
 {
     [JsonProperty("name")]
     public string Name { get; set; }

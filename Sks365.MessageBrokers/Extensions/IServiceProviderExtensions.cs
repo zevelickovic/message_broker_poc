@@ -7,7 +7,7 @@ namespace Sks365.MessageBrokers.Extensions;
 
 public static class IServiceProviderExtensions
 {
-    public static IServiceCollection UseMessageBroker(this IServiceCollection services)
+    public static IServiceCollection AddMessageBroker(this IServiceCollection services)
     {
         services.AddSingleton<InfrastructureDomainEventsList>();
         services.AddSingleton<IDomainEventHandler, DomainEventHandler>();

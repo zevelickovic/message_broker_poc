@@ -6,7 +6,7 @@ public delegate void ListenerErrorHandler(object sender, SubscriberUnhandledExce
 public interface ISubscriber : IDisposable
 {
     event MessageHandler MessageReceived;
-    event ListenerErrorHandler ListenerErrorHandler;
+    event ListenerErrorHandler SubscriberErrorHandler;
 
     void Start();
     void Stop();

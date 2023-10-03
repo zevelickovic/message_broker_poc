@@ -11,7 +11,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddSwaggerGen();
 
-builder.Services.UseMessageBroker();
+builder.Services.AddMessageBroker();
 builder.Services.AddTransient<DomainEventMessageHandler<TestingEvent>, TestingEventEventHandler>();
 
 var app = builder.Build();

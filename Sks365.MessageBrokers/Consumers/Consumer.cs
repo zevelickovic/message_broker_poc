@@ -5,29 +5,29 @@ namespace Sks365.MessageBrokers.Consumers;
 
 public class Consumer : IConsumer
 {
-    private readonly ISubscriber _busListener;
+    private readonly ISubscriber _subscriber;
     private readonly IDomainEventHandler _eventMessageHandler;
 
-    public Consumer(ISubscriber busListener, IDomainEventHandler eventMessageHandler)
+    public Consumer(ISubscriber subscriber, IDomainEventHandler eventMessageHandler)
     {
-        _busListener = busListener;
+        _subscriber = subscriber;
         _eventMessageHandler = eventMessageHandler;
     }
 
     public void Start()
     {
-        _busListener.MessageReceived += Listener_OnMessageReceived; ;
-        _busListener.ListenerErrorHandler += Listener_OnError;
-        _busListener.Start();
+        _subscriber.MessageReceived += Listener_OnMessageReceived; ;
+        _subscriber.SubscriberErrorHandler += SubscriberOnError;
+        _subscriber.Start();
     }
 
     public void Stop()
     {
-        if (_busListener == null)
+        if (_subscriber == null)
             return;
-        _busListener.ListenerErrorHandler -= Listener_OnError;
-        _busListener.MessageReceived -= Listener_OnMessageReceived;
-        _busListener.Stop();
+        _subscriber.SubscriberErrorHandler -= SubscriberOnError;
+        _subscriber.MessageReceived -= Listener_OnMessageReceived;
+        _subscriber.Stop();
     }
 
     private ConsumerResponse Listener_OnMessageReceived(string context)
@@ -41,7 +41,7 @@ public class Consumer : IConsumer
         return response;
     }
 
-    private void Listener_OnError(object sender, SubscriberUnhandledExceptionHolder e)
+    private void SubscriberOnError(object sender, SubscriberUnhandledExceptionHolder e)
     {
         throw new NotImplementedException();
     }

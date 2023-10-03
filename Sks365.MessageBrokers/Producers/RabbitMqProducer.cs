@@ -20,6 +20,7 @@ public class RabbitMqProducer : IProducer
 
     private bool Publish(object obj, string routingKey)
     {
+        //todo use single connection
         using (var connection = _connectionFactory.CreateConnection())
         {
             using (var channel = connection.CreateModel())
