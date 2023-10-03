@@ -24,9 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="kafka.consumer.properties">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Update="kafka.producer.properties">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
