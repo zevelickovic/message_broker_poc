@@ -1,5 +1,6 @@
 ﻿namespace Sks365.MessageBrokers.Subscribers;
 
+//public delegate ConsumerResponse MessageHandler(string context, IDictionary<string, object> headers = null);
 public delegate ConsumerResponse MessageHandler(string context);
 public delegate void ListenerErrorHandler(object sender, SubscriberUnhandledExceptionHolder e);
 

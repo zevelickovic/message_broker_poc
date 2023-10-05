@@ -15,7 +15,7 @@ public static class IServiceProviderExtensions
         return AddMessageBroker(services, null);
     }
 
-    public static IServiceCollection AddMessageBroker(this IServiceCollection services, Action<BrokerConfiguration>? options)
+    public static IServiceCollection AddMessageBroker(this IServiceCollection services, Action<MessageBrokerOptions>? options)
     {
         services.AddConfiguration(options);
         services.AddSingleton<InfrastructureDomainEventsList>();
@@ -25,21 +25,21 @@ public static class IServiceProviderExtensions
         return services;
     }
     
-    private static void AddConfiguration(this IServiceCollection services, Action<BrokerConfiguration>? options)
+    private static void AddConfiguration(this IServiceCollection services, Action<MessageBrokerOptions>? options)
     {
         if (options != null)
         {
-            services.Configure<BrokerConfiguration>(options);
+            services.Configure<MessageBrokerOptions>(options);
             
         }
         else
         {
-            IConfiguration? configuration = services.BuildServiceProvider().GetService<IConfiguration>();
-            services.Configure<BrokerConfiguration>(opt => configuration?.GetSection("message-broker").Bind(opt));
+            //IConfiguration? configuration = services.BuildServiceProvider().GetService<IConfiguration>();
+            //services.Configure<MessageBrokerOptions>(opt => configuration?.GetSection("message-broker").Bind(opt));
         }
-        services.AddSingleton<BrokerConfiguration>(provider =>
+        services.AddSingleton<MessageBrokerOptions>(provider =>
         {
-            var monitor = provider.GetRequiredService<IOptions<BrokerConfiguration>>()?.Value;
+            var monitor = provider.GetRequiredService<IOptions<MessageBrokerOptions>>()?.Value;
             if (monitor == null)
             {
                 throw new ArgumentException(nameof(options));

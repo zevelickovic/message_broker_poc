@@ -11,28 +11,28 @@ public class MessageBroker : IMessageBroker
     private readonly Dictionary<string, IConsumer> _consumers = new();
     private readonly Dictionary<string, IProducer> _producers = new();
 
-    public MessageBroker(IDomainEventHandler eventMessageHandler, BrokerConfiguration configuration)
+    public MessageBroker(IDomainEventHandler eventMessageHandler, MessageBrokerOptions options)
     {
-        if (configuration.Kafka?.Subscribers != null)
-            foreach (var config in configuration.Kafka.Subscribers)
+        if (options.Kafka?.Subscribers != null)
+            foreach (var config in options.Kafka.Subscribers)
             {
                 var subscriber = new KafkaSubscriber(config);
                 _consumers.Add(config.Name, new Consumer(subscriber, eventMessageHandler));
             }
 
-        if (configuration.RabbitMq?.Subscribers != null)
-            foreach (var config in configuration.RabbitMq.Subscribers)
+        if (options.RabbitMq?.Subscribers != null)
+            foreach (var config in options.RabbitMq.Subscribers)
             {
                 var subscriber = new RabbitMqSubscriber(config);
                 _consumers.Add(config.Name, new Consumer(subscriber, eventMessageHandler));
             }
 
-        if (configuration.Kafka?.Producers != null)
-            foreach (var config in configuration.Kafka.Producers)
+        if (options.Kafka?.Producers != null)
+            foreach (var config in options.Kafka.Producers)
                 _producers.Add(config.Name, new KafkaProducer(config));
 
-        if (configuration.RabbitMq?.Producers != null)
-            foreach (var config in configuration.RabbitMq.Producers)
+        if (options.RabbitMq?.Producers != null)
+            foreach (var config in options.RabbitMq.Producers)
                 _producers.Add(config.Name, new RabbitMqProducer(config));
 
     }
