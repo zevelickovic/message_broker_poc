@@ -11,30 +11,32 @@ public class MessageBroker : IMessageBroker
     private readonly Dictionary<string, IConsumer> _consumers = new();
     private readonly Dictionary<string, IProducer> _producers = new();
 
-    public MessageBroker(IDomainEventHandler eventMessageHandler)
+    public MessageBroker(IDomainEventHandler eventMessageHandler, BrokerConfiguration configuration)
     {
-        var kafkaConfig = new KafkaBrokerConfiguration();
-        var rabbitMqConfig = new RabbitMqBrokerConfiguration();
+        if (configuration.Kafka?.Subscribers != null)
+            foreach (var config in configuration.Kafka.Subscribers)
+            {
+                var subscriber = new KafkaSubscriber(config);
+                _consumers.Add(config.Name, new Consumer(subscriber, eventMessageHandler));
+            }
 
-        foreach (var config in kafkaConfig.GetSubscribersConfiguration())
-        {
-            var subscriber = new KafkaSubscriber(config.Value);
-            _consumers.Add(config.Key, new Consumer(subscriber, eventMessageHandler));
-        }
-        foreach (var config in rabbitMqConfig.GetSubscribersConfiguration())
-        {
-            var subscriber = new RabbitMqSubscriber(config.Value);
-            _consumers.Add(config.Key, new Consumer(subscriber, eventMessageHandler));
-        }
-        foreach (var config in kafkaConfig.GetProducersConfiguration())
-        {
-            _producers.Add(config.Key, new KafkaProducer(config.Value));
-        }
-        foreach (var config in rabbitMqConfig.GetProducersConfiguration())
-        {
-            _producers.Add(config.Key, new RabbitMqProducer(config.Value));
-        }
+        if (configuration.RabbitMq?.Subscribers != null)
+            foreach (var config in configuration.RabbitMq.Subscribers)
+            {
+                var subscriber = new RabbitMqSubscriber(config);
+                _consumers.Add(config.Name, new Consumer(subscriber, eventMessageHandler));
+            }
+
+        if (configuration.Kafka?.Producers != null)
+            foreach (var config in configuration.Kafka.Producers)
+                _producers.Add(config.Name, new KafkaProducer(config));
+
+        if (configuration.RabbitMq?.Producers != null)
+            foreach (var config in configuration.RabbitMq.Producers)
+                _producers.Add(config.Name, new RabbitMqProducer(config));
+
     }
+
     public IConsumer GetConsumer(string name)
     {
         return _consumers[name];

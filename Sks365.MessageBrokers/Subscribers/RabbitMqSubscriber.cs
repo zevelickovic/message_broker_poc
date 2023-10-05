@@ -82,12 +82,12 @@ public class RabbitMqSubscriber : ISubscriber
             _channel = _connection.CreateModel();
         }
 
-        _channel.QueueDeclare(_settings.QueueName, _settings.Durable, _settings.Exclusive, _settings.AutoDelete, null);
-        _channel.ExchangeDeclare(_settings.ExchangeName, "topic", _settings.Durable, _settings.AutoDelete, null);
-        _channel.QueueBind(_settings.QueueName, _settings.ExchangeName, _settings.RoutingKey);
+        _channel.QueueDeclare(_settings.Queue, _settings.Durable, _settings.Exclusive, _settings.AutoDelete, null);
+        _channel.ExchangeDeclare(_settings.Exchange, "topic", _settings.Durable, _settings.AutoDelete, null);
+        _channel.QueueBind(_settings.Queue, _settings.Exchange, _settings.RoutingKey);
         eventingBasicConsumer = new EventingBasicConsumer(_channel);
         _channel.BasicQos(0, _settings.Prefetch, false);
-        _channel.BasicConsume(_settings.QueueName, false, eventingBasicConsumer);
+        _channel.BasicConsume(_settings.Queue, false, eventingBasicConsumer);
         eventingBasicConsumer.Received += EventingBasicConsumer_Received;
     }
 }

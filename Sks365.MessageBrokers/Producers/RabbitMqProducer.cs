@@ -25,10 +25,11 @@ public class RabbitMqProducer : IProducer
         {
             using (var channel = connection.CreateModel())
             {
-                channel.ExchangeDeclare(_settings.ExchangeName, "topic", true);
+                channel.ExchangeDeclare(_settings.Exchange, "topic", true);
                 var payload = JsonConvert.SerializeObject(obj);
                 var body = Encoding.UTF8.GetBytes(payload);
-                channel.BasicPublish(_settings.ExchangeName, routingKey, null, body);
+                //todo add messageType to headers
+                channel.BasicPublish(_settings.Exchange, routingKey, null, body);
             }
             return true;
         }
