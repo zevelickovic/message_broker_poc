@@ -1,12 +1,15 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Sks365.MessageBrokers.Configuration.Broker;
 using Sks365.MessageBrokers.Configuration.RabbitMq;
 using Sks365.MessageBrokers.DomainMessages.Handlers;
 using Sks365.MessageBrokers.Extensions;
 using Sks365.MessageBrokers.TestApi.DummyTest;
+using Sks365.MessageBrokers.TestApi.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
@@ -33,8 +36,17 @@ builder.Services.AddSwaggerGen();
 //        AutoDelete = false
 //    });
 //});
+
+
+IConfiguration? configurations = builder.Services.BuildServiceProvider().GetService<IConfiguration>();
+var rabbitMQChannelSettings = configurations.GetSection(typeof(MessageBrokerSettingsTest).Name);
+builder.Services.Configure<MessageBrokerSettingsTest>(rabbitMQChannelSettings).AddScoped<MessageBrokerSettingsTest>();
+builder.Services.AddSingleton<IConfigureOptions<MessageBrokerOptions>, ConfigurationMessageBrokerOptions>();
+
+
 builder.Services.AddMessageBroker();
-//var brokerConfiguration = builder.Services.BuildServiceProvider().GetRequiredService<BrokerConfiguration>();
+
+var brokerConfiguration = builder.Services.BuildServiceProvider().GetRequiredService<MessageBrokerOptions>();
 
 
 builder.Services.AddTransient<DomainEventMessageHandler<TestingEvent>, TestingEventEventHandler>();
