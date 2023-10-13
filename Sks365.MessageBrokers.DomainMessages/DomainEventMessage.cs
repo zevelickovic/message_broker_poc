@@ -1,6 +1,6 @@
 ﻿namespace Sks365.MessageBrokers.DomainMessages;
 
-public abstract class DomainEventMessage<T> where T : DomainEventMessage<T>
+public abstract record DomainEventMessage<T> where T : DomainEventMessage<T>
 {
     public virtual Type GetEventType () => typeof(T);
     public virtual InfrastructureEvent<T> CreateInfrastructureEvent()
