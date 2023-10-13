@@ -1,4 +1,5 @@
-﻿using Sks365.MessageBrokers.Configuration.Broker;
+﻿using Microsoft.Extensions.Logging;
+using Sks365.MessageBrokers.Configuration.Broker;
 using Sks365.MessageBrokers.Consumers;
 using Sks365.MessageBrokers.DomainMessages.Handlers;
 using Sks365.MessageBrokers.Producers;
@@ -8,11 +9,13 @@ namespace Sks365.MessageBrokers.Brokers;
 
 public class MessageBroker : IMessageBroker
 {
+    private readonly ILogger _logger;
     private readonly Dictionary<string, IConsumer> _consumers = new();
     private readonly Dictionary<string, IProducer> _producers = new();
 
-    public MessageBroker(IDomainEventHandler eventMessageHandler, MessageBrokerOptions options)
+    public MessageBroker(IDomainEventHandler eventMessageHandler, IMessageBrokerOptions options, ILogger logger)
     {
+        _logger = logger;
         if (options.Kafka?.Subscribers != null)
             foreach (var config in options.Kafka.Subscribers)
             {
@@ -23,7 +26,7 @@ public class MessageBroker : IMessageBroker
         if (options.RabbitMq?.Subscribers != null)
             foreach (var config in options.RabbitMq.Subscribers)
             {
-                var subscriber = new RabbitMqSubscriber(config);
+                var subscriber = new RabbitMqSubscriber(config, logger);
                 _consumers.Add(config.Name, new Consumer(subscriber, eventMessageHandler));
             }
 

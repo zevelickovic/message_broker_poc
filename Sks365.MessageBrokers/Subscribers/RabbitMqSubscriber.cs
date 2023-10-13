@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Sks365.MessageBrokers.Configuration.RabbitMq;
@@ -19,7 +20,7 @@ public class RabbitMqSubscriber : ISubscriber
     private Thread receivingThread;
     private EventingBasicConsumer eventingBasicConsumer;
 
-    public RabbitMqSubscriber(RabbitMqSubscriberConfiguration settings)
+    public RabbitMqSubscriber(RabbitMqSubscriberConfiguration settings, ILogger logger)
     {
         _settings = settings;
         _connectionFactory = _settings.CreateConnectionFactory();

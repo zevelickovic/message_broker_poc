@@ -16,41 +16,52 @@ builder.Services.AddControllers();
 
 builder.Services.AddSwaggerGen();
 
+//from direct custom options definition
 //builder.Services.AddMessageBroker(options =>
 //{
 //    options.RabbitMq = new RabbitMqConfiguration();
 //    options.RabbitMq.Subscribers = new List<RabbitMqSubscriberConfiguration>();
 //    options.RabbitMq.Subscribers.Add(new RabbitMqSubscriberConfiguration
 //    {
-//        Name = "rmq-subscriber-03",
+//        Name = "rmq-subscriber-02   ",
 //        Host = "localhost",
 //        VirtualHost = "test-host",
 //        UserName = "guest",
 //        Password = "guest",
 //        Exchange = "broker-exchange-01",
-//        Queue = "broker-test-queue-03",
-//        RoutingKey = "#",
+//        Queue = "broker-test-queue-05",
+//        RoutingKey = "5",
 //        Prefetch = 1,
 //        Durable = true,
 //        Exclusive = false,
 //        AutoDelete = false
 //    });
+//    options.RabbitMq.Producers = new List<RabbitMqProducerConfiguration>();
+//    options.RabbitMq.Producers.Add(new RabbitMqProducerConfiguration()
+//    {
+//        Name = "rmq-producer-03",
+//        Host = "localhost",
+//        VirtualHost = "test-host",
+//        UserName = "guest",
+//        Password = "guest",
+//        Exchange = "broker-exchange-01"
+//    });
 //});
 
+//custom configuration by user
 
-IConfiguration? configurations = builder.Services.BuildServiceProvider().GetService<IConfiguration>();
-var rabbitMQChannelSettings = configurations.GetSection(typeof(MessageBrokerSettingsTest).Name);
-builder.Services.Configure<MessageBrokerSettingsTest>(rabbitMQChannelSettings).AddScoped<MessageBrokerSettingsTest>();
-builder.Services.AddSingleton<IConfigureOptions<MessageBrokerOptions>, ConfigurationMessageBrokerOptions>();
+//builder.Services.Configure<MessageBrokerSettingsExample>(options => builder.Configuration.GetSection(typeof(MessageBrokerSettingsExample).Name).Bind(options));
+//builder.Services.AddSingleton<IConfigureOptions<MessageBrokerOptions>, ConfigurationMessageBrokerOptions>();
+//builder.Services.AddMessageBroker();
 
+//from appConfiguration
+builder.Services.AddMessageBroker(options => builder.Configuration.GetSection("MessageBrokerOptions").Bind(options));
 
-builder.Services.AddMessageBroker();
-
-var brokerConfiguration = builder.Services.BuildServiceProvider().GetRequiredService<MessageBrokerOptions>();
-
+//test
+//var brokerConfiguration = builder.Services.BuildServiceProvider().GetRequiredService<IMessageBrokerOptions>();
 
 builder.Services.AddTransient<DomainEventMessageHandler<TestingEvent>, TestingEventEventHandler>();
- builder.Services.AddTransient<DomainEventMessageHandler<TestingEvent2>, TestingEventEventHandler2>();
+builder.Services.AddTransient<DomainEventMessageHandler<TestingEvent2>, TestingEventEventHandler2>();
 
 var app = builder.Build();
 
