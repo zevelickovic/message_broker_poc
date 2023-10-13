@@ -38,6 +38,7 @@ builder.Services.AddMessageBroker();
 
 
 builder.Services.AddTransient<DomainEventMessageHandler<TestingEvent>, TestingEventEventHandler>();
+ builder.Services.AddTransient<DomainEventMessageHandler<TestingEvent2>, TestingEventEventHandler2>();
 
 var app = builder.Build();
 

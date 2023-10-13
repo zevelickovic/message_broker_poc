@@ -1,5 +1,4 @@
 ﻿using Confluent.Kafka;
-using Microsoft.Extensions.Configuration;
 using Sks365.MessageBrokers.Configuration.Kafka;
 using Sks365.MessageBrokers.Extensions;
 
@@ -35,10 +34,10 @@ public class KafkaSubscriber : ISubscriber
                 var cr = _consumer.Consume(cts.Token);
 
                 var message = cr.Message.Value;
-
+                var headers = cr.Message.Headers.GetMessageHeader();
                 Console.WriteLine($"Consumed a message {cr.Message.Key} with offset {cr.Offset}, in topic: {cr.Topic}, partition: {cr.Partition.Value}, sent at: {cr.Message.Timestamp.UnixTimestampMs}.");
 
-                var consumerResponse = MessageReceived(message);
+                var consumerResponse = MessageReceived(message, headers);
 
                 Thread.Sleep(20);
 

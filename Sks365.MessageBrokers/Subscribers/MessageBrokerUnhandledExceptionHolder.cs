@@ -1,7 +1,7 @@
-﻿public class SubscriberUnhandledExceptionHolder
+﻿public class MessageBrokerUnhandledExceptionHolder
 {
     private readonly Exception _currentException;
-    public SubscriberUnhandledExceptionHolder(Exception exc)
+    public MessageBrokerUnhandledExceptionHolder(Exception exc)
     {
         _currentException = exc;
     }

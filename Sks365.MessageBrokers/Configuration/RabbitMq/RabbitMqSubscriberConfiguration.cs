@@ -1,4 +1,6 @@
-﻿namespace Sks365.MessageBrokers.Configuration.RabbitMq;
+﻿using Newtonsoft.Json;
+
+namespace Sks365.MessageBrokers.Configuration.RabbitMq;
 
 public class RabbitMqSubscriberConfiguration : RabbitMqSettingsConfiguration
 {

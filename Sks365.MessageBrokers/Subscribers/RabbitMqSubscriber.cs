@@ -66,7 +66,9 @@ public class RabbitMqSubscriber : ISubscriber
     {
         var body = e.Body.Span;
         var message = Encoding.UTF8.GetString(body);
-        var consumerResponse = MessageReceived(message);
+        var headers = e.BasicProperties.Headers;
+        
+        var consumerResponse = MessageReceived(message, headers);
         _channel.BasicAck(e.DeliveryTag, consumerResponse.Success);
     }
 

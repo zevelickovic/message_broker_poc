@@ -25,3 +25,27 @@ public class TestingEventEventHandler : DomainEventMessageHandler<TestingEvent>
         return await Task<bool>.Run(() => true);
     }
 }
+
+public class TestingEventEventHandler2 : DomainEventMessageHandler<TestingEvent2>
+{
+    public TestingEventEventHandler2()
+    {
+    }
+
+    public override bool HandleDomainMessage(TestingEvent2 domainMessage)
+    {
+        Console.WriteLine("TestingEventEventHandler");
+        if (domainMessage == null)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public override async Task<bool> HandleDomainMessageAsync(TestingEvent2 domainMessage)
+    {
+        Console.WriteLine("TestingEventEventHandler Async");
+        return await Task<bool>.Run(() => true);
+    }
+}

@@ -7,3 +7,7 @@ public class TestingEvent : DomainEventMessage<TestingEvent>, IDomainMessage
 {
     public int TestId { get; set; }
 }
+public class TestingEvent2 : DomainEventMessage<TestingEvent2>, IDomainMessage
+{
+    public int TestId { get; set; }
+}

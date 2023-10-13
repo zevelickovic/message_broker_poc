@@ -2,6 +2,7 @@
 
 public abstract class DomainEventMessage<T> where T : DomainEventMessage<T>
 {
+    public virtual Type GetEventType () => typeof(T);
     public virtual InfrastructureEvent<T> CreateInfrastructureEvent()
     {
         var @event = new InfrastructureEvent<T>()
