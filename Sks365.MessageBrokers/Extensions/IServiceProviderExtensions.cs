@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Sks365.MessageBrokers.Brokers;
 using Sks365.MessageBrokers.Configuration.Broker;
+using Sks365.MessageBrokers.DomainMessages.Events;
 using Sks365.MessageBrokers.DomainMessages.Handlers;
 
 namespace Sks365.MessageBrokers.Extensions;
@@ -22,6 +22,7 @@ public static class IServiceProviderExtensions
             var settings = a.GetRequiredService<IOptions<MessageBrokerOptions>>().Value;
             return settings;
         });
+        services.AddSingleton<InfrastructureDomainEventsList>();
         services.AddSingleton<IDomainEventHandler, DomainEventHandler>();
         services.AddSingleton<IMessageBroker, MessageBroker>();
         return services;

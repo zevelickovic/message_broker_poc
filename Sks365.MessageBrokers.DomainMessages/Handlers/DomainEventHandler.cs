@@ -1,20 +1,26 @@
 ﻿using Newtonsoft.Json;
+using Sks365.MessageBrokers.DomainMessages.Events;
 
 namespace Sks365.MessageBrokers.DomainMessages.Handlers;
 
 public class DomainEventHandler : IDomainEventHandler
 {
     private readonly IServiceProvider _provider;
+    private readonly InfrastructureDomainEventsList _infrastructureDomainEventsList;
 
-    public DomainEventHandler(IServiceProvider provider)
+    public DomainEventHandler(IServiceProvider provider, InfrastructureDomainEventsList infrastructureDomainEventsList)
     {
         _provider = provider;
+        _infrastructureDomainEventsList = infrastructureDomainEventsList;
     }
 
-    public async Task<bool> ProcessMessageAsync(string messageJson, string assemblyQualifiedName)
+    public async Task<bool> ProcessMessageAsync(string messageJson, string eventTypeName)
     {
-        var domaintMessageType = Type.GetType(assemblyQualifiedName);
-        var domainMesssage = JsonConvert.DeserializeObject(Convert.ToString(messageJson), typeof(InfrastructureEvent<>).MakeGenericType(domaintMessageType), new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto });
+        _infrastructureDomainEventsList.InfrastructureDomainEvents.TryGetValue(eventTypeName,
+            out Type domaintMessageType);
+        var domainMesssage = JsonConvert.DeserializeObject(Convert.ToString(messageJson),
+            typeof(InfrastructureEvent<>).MakeGenericType(domaintMessageType),
+            new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto });
         var genericType = typeof(DomainEventMessageHandler<>).MakeGenericType(domaintMessageType);
         if (_provider.GetService(genericType) is IDomainMessageHandler handler)
         {
@@ -24,10 +30,13 @@ public class DomainEventHandler : IDomainEventHandler
         return false;
     }
 
-    public bool ProcessMessage(string messageJson, string assemblyQualifiedName)
+    public bool ProcessMessage(string messageJson, string eventTypeName)
     {
-        var domaintMessageType = Type.GetType(assemblyQualifiedName);
-        var domainMesssage = JsonConvert.DeserializeObject(Convert.ToString(messageJson), typeof(InfrastructureEvent<>).MakeGenericType(domaintMessageType), new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto });
+        _infrastructureDomainEventsList.InfrastructureDomainEvents.TryGetValue(eventTypeName,
+            out Type domaintMessageType);
+        var domainMesssage = JsonConvert.DeserializeObject(Convert.ToString(messageJson),
+            typeof(InfrastructureEvent<>).MakeGenericType(domaintMessageType),
+            new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.Auto });
         var genericType = typeof(DomainEventMessageHandler<>).MakeGenericType(domaintMessageType);
         if (_provider.GetService(genericType) is IDomainMessageHandler handler)
         {

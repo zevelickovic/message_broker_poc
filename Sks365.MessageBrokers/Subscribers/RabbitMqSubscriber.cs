@@ -20,7 +20,7 @@ public class RabbitMqSubscriber : ISubscriber
     private Thread receivingThread;
     private EventingBasicConsumer eventingBasicConsumer;
 
-    public RabbitMqSubscriber(RabbitMqSubscriberConfiguration settings, ILogger logger)
+    public RabbitMqSubscriber(RabbitMqSubscriberConfiguration settings)
     {
         _settings = settings;
         _connectionFactory = _settings.CreateConnectionFactory();

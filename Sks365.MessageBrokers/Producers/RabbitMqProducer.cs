@@ -5,6 +5,7 @@ using System.Text;
 using RabbitMQ.Client;
 using Sks365.MessageBrokers.Configuration.RabbitMq;
 using Sks365.MessageBrokers.Variables;
+using Sks365.MessageBrokers.DomainMessages.Events;
 
 namespace Sks365.MessageBrokers.Producers;
 
@@ -21,11 +22,11 @@ public class RabbitMqProducer : IProducer
 
     public bool Publish<T>(DomainEventMessage<T> obj, string key) where T : DomainEventMessage<T>, IDomainMessage
     {
-        var eventType = obj.GetEventType();
-        var assemblyQualifiedName = eventType.AssemblyQualifiedName;
+        var eventName = obj.GetEventType().Name;
+        
         var headers = new Dictionary<string, object>
         {
-            { HeaderProperties.EventType, assemblyQualifiedName }
+            { HeaderProperties.EventName, eventName }
         };
         var infrastructureEvent = obj.CreateInfrastructureEvent();
         return Publish(infrastructureEvent, key, headers);

@@ -50,9 +50,8 @@ public class KafkaProducer : IProducer
 
     public bool Publish<T>(DomainEventMessage<T> obj, string key) where T : DomainEventMessage<T>, IDomainMessage
     {
-        var eventType = obj.GetEventType();
-        var assemblyQualifiedName = eventType.AssemblyQualifiedName;
-        var headers = new Headers { { HeaderProperties.EventType, Encoding.ASCII.GetBytes(assemblyQualifiedName) } };
+        var eventName = obj.GetEventType().Name;
+        var headers = new Headers { { HeaderProperties.EventName, Encoding.ASCII.GetBytes(eventName) } };
         var message = obj.CreateInfrastructureEvent();
         return Publish(message, key, headers);
     }

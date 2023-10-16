@@ -2,5 +2,5 @@
 
 public static class HeaderProperties
 {
-    public const string EventType = "EventType";
+    public const string EventName = "EventName";
 }

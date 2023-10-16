@@ -44,22 +44,29 @@ public class Consumer : IConsumer
             return response;
         }
 
-        if (!headers.ContainsKey(HeaderProperties.EventType))
+        if (!headers.ContainsKey(HeaderProperties.EventName))
         {
-            HandleMessageExeption(json, "Message received with Unsupported Message Type");
+            HandleMessageExeption(json, "Message received with Missing Message Name");
             return response;
         }
 
-        var typeBytes = headers[HeaderProperties.EventType] as byte[];
-        if (typeBytes == null)
+        var typeNameBytes = headers[HeaderProperties.EventName] as byte[];
+        if (typeNameBytes == null)
         {
-            HandleMessageExeption(json, "Message received with Unsupported Message Type");
+            HandleMessageExeption(json, "Message received with Unsupported Message Type Name");
             return response;
         }
 
-        var type = Encoding.UTF8.GetString(typeBytes);
-        var processMessageTask =
-            Task.Run(async () => response.Success = await this._eventMessageHandler.ProcessMessageAsync(json, type)).Result;
+        var typeName = Encoding.UTF8.GetString(typeNameBytes);
+        try
+        {
+            response.Success = _eventMessageHandler.ProcessMessage(json, typeName);
+        }
+        catch (Exception e)
+        {
+            ConsumerErrorHandler?.Invoke(this, new MessageBrokerUnhandledExceptionHolder(e));
+        }
+        
         return response;
     }
 
