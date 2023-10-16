@@ -28,9 +28,15 @@ builder.Services.AddSwaggerGen();
 //        VirtualHost = "test-host",
 //        UserName = "guest",
 //        Password = "guest",
-//        Exchange = "broker-exchange-01",
-//        Queue = "broker-test-queue-05",
-//        RoutingKey = "5",
+//        Bindings = new List<Binding>
+//        {
+//            new Binding
+//            {
+//                Exchange = "broker-exchange-01",
+//                Queue = "broker-test-queue-05",
+//                RoutingKey = "05",
+//            }
+//        },
 //        Prefetch = 1,
 //        Durable = true,
 //        Exclusive = false,

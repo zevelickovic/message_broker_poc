@@ -21,7 +21,7 @@ public class Consumer : IConsumer
 
     public void Start()
     {
-        _subscriber.MessageReceived += Listener_OnMessageReceived;
+        _subscriber.MessageReceived += OnMessageReceived;
         _subscriber.SubscriberErrorHandler += SubscriberOnError;
         _subscriber.Start();
     }
@@ -31,11 +31,11 @@ public class Consumer : IConsumer
         if (_subscriber == null)
             return;
         _subscriber.SubscriberErrorHandler -= SubscriberOnError;
-        _subscriber.MessageReceived -= Listener_OnMessageReceived;
+        _subscriber.MessageReceived -= OnMessageReceived;
         _subscriber.Stop();
     }
 
-    private ConsumerResponse Listener_OnMessageReceived(string context, IDictionary<string, object> headers)
+    private ConsumerResponse OnMessageReceived(string context, IDictionary<string, object> headers)
     {
         var response = new ConsumerResponse();
         if (context is not string json)

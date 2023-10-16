@@ -35,13 +35,18 @@ public class KafkaSettingsConfigurationExample
 
 public class RabbitMqSubscriberConfigurationExample : RabbitMqSettingsConfigurationExample
 {
-    public string Exchange { get; set; }
-    public string Queue { get; set; }
-    public string RoutingKey { get; set; }
+    public List<RabbitMqSubscriberBindingConfigurationExample> Bindings { get; set; }
     public ushort Prefetch { get; set; } = 1;
     public bool Durable { get; set; } = true;
     public bool Exclusive { get; set; } = false;
     public bool AutoDelete { get; set; } = false;
+}
+
+public class RabbitMqSubscriberBindingConfigurationExample
+{
+    public string Exchange { get; set; }
+    public string Queue { get; set; }
+    public string RoutingKey { get; set; }
 }
 
 public class RabbitMqProducerConfigurationExample : RabbitMqSettingsConfigurationExample

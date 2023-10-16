@@ -43,16 +43,23 @@ namespace Sks365.MessageBrokers.TestApi.Options
                     Name = rabbitMq.Name,
                     AutoDelete = rabbitMq.AutoDelete,
                     Durable = rabbitMq.Durable,
-                    Exchange = rabbitMq.Exchange,
                     Exclusive = rabbitMq.Exclusive,
                     Host = rabbitMq.Host,
                     Password = rabbitMq.Password,
                     Prefetch = rabbitMq.Prefetch,
-                    Queue = rabbitMq.Queue,
-                    RoutingKey = rabbitMq.RoutingKey,
                     UserName = rabbitMq.UserName,
-                    VirtualHost = rabbitMq.VirtualHost
+                    VirtualHost = rabbitMq.VirtualHost,
+                    Bindings = new List<Binding>()
                 };
+                foreach (var binging in rabbitMq.Bindings)
+                {
+                    subscriberConfiguration.Bindings.Add(new Binding
+                    {
+                        Exchange = binging.Exchange,
+                        Queue = binging.Queue,
+                        RoutingKey = binging.RoutingKey
+                    });
+                }
                 options.RabbitMq.Subscribers.Add(subscriberConfiguration);
             }
             foreach (var rabbitMq in _settingsExample.RabbitMq.Producers)

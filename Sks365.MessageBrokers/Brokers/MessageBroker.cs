@@ -9,14 +9,11 @@ namespace Sks365.MessageBrokers.Brokers;
 
 public class MessageBroker : IMessageBroker
 {
-    //private readonly ILogger _logger;
     private readonly Dictionary<string, IConsumer> _consumers = new();
     private readonly Dictionary<string, IProducer> _producers = new();
 
-    //public MessageBroker(IDomainEventHandler eventMessageHandler, IMessageBrokerOptions options, ILogger logger)
     public MessageBroker(IDomainEventHandler eventMessageHandler, IMessageBrokerOptions options)
     {
-        //_logger = logger;
         if (options.Kafka?.Subscribers != null)
             foreach (var config in options.Kafka.Subscribers)
             {
@@ -27,7 +24,6 @@ public class MessageBroker : IMessageBroker
         if (options.RabbitMq?.Subscribers != null)
             foreach (var config in options.RabbitMq.Subscribers)
             {
-                //var subscriber = new RabbitMqSubscriber(config, logger);
                 var subscriber = new RabbitMqSubscriber(config);
                 _consumers.Add(config.Name, new Consumer(subscriber, eventMessageHandler));
             }

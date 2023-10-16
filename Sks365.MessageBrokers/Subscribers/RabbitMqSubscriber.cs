@@ -34,15 +34,21 @@ public class RabbitMqSubscriber : ISubscriber
 
     public void Stop()
     {
-        if (_channel != null && _channel.IsOpen)
+        if (_channel != null)
         {
-            _channel.Close();
+            if (_channel.IsOpen)
+            {
+                _channel.Close();
+            }
             _channel.Dispose();
         }
 
-        if (_connection != null && _connection.IsOpen)
+        if (_connection != null)
         {
-            _connection.Close();
+            if (_connection.IsOpen)
+            {
+                _connection.Close();
+            }
             _connection.Dispose();
         }
 
@@ -85,12 +91,17 @@ public class RabbitMqSubscriber : ISubscriber
             _channel = _connection.CreateModel();
         }
 
-        _channel.QueueDeclare(_settings.Queue, _settings.Durable, _settings.Exclusive, _settings.AutoDelete, null);
-        _channel.ExchangeDeclare(_settings.Exchange, "topic", _settings.Durable, _settings.AutoDelete, null);
-        _channel.QueueBind(_settings.Queue, _settings.Exchange, _settings.RoutingKey);
         eventingBasicConsumer = new EventingBasicConsumer(_channel);
-        _channel.BasicQos(0, _settings.Prefetch, false);
-        _channel.BasicConsume(_settings.Queue, false, eventingBasicConsumer);
+
+        foreach (var binding in _settings.Bindings)
+        {
+            _channel.QueueDeclare(binding.Queue, _settings.Durable, _settings.Exclusive, _settings.AutoDelete, null);
+            _channel.ExchangeDeclare(binding.Exchange, "topic", _settings.Durable, _settings.AutoDelete, null);
+            _channel.QueueBind(binding.Queue, binding.Exchange, binding.RoutingKey);
+            _channel.BasicQos(0, _settings.Prefetch, false);
+            _channel.BasicConsume(binding.Queue, false, eventingBasicConsumer);
+        }
+        
         eventingBasicConsumer.Received += EventingBasicConsumer_Received;
     }
 }
